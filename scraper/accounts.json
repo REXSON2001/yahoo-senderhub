@@ -1,0 +1,16 @@
+{
+  "yahoo_accounts": [
+    {
+      "email": "rexson2001",
+      "password": "2HBW-8bqg3ui2R^",
+      "name": "Primary Account",
+      "enabled": true
+    },
+    {
+      "email": "rexsepi",
+      "password": "e2G/+EQ62EyDbdP",
+      "name": "Secondary Account", 
+      "enabled": true
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: yahoo-scraper-db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-sender_hub}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password123}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - scraper-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # FastAPI Server
+  api:
+    build: ./api
+    container_name: yahoo-scraper-api
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=${DB_NAME:-sender_hub}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-password123}
+      - DB_PORT=5432
+    ports:
+      - "8001:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./shared_data/screenshots:/app/screenshots
+      - ./shared_data/data:/app/data
+    networks:
+      - scraper-network
+    restart: unless-stopped
+
+  # Web Scraper
+  scraper:
+    build: ./scraper
+    container_name: yahoo-scraper
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=${DB_NAME:-sender_hub}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-password123}
+      - DB_PORT=5432
+      - YAHOO_EMAIL=${YAHOO_EMAIL}
+      - YAHOO_PASSWORD=${YAHOO_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./shared_data/screenshots:/app/screenshots
+      - ./shared_data/data:/app/data
+    networks:
+      - scraper-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  scraper-network:
+    driver: bridge

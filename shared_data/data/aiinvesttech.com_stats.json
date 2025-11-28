@@ -1,0 +1,77 @@
+{
+  "domain": "aiinvesttech.com",
+  "accounts": {
+    "rexson2001": {
+      "last_updated": "2025-11-28T15:17:18.806503",
+      "data": {
+        "domain": "aiinvesttech.com",
+        "timestamp": "2025-11-28T15:17:13.593223",
+        "source": "yahoo_sender_hub",
+        "status": "Verified",
+        "verified": true,
+        "added_date": null,
+        "delivered_count": null,
+        "delivered_percentage": null,
+        "complaint_rate": null,
+        "complaint_percentage": null,
+        "complaint_trend": null,
+        "time_range": null,
+        "insights_data": {
+          "has_data": false
+        },
+        "screenshot_path": null,
+        "has_data": false
+      }
+    },
+    "rexsepi": {
+      "last_updated": "2025-11-28T15:17:45.343250",
+      "data": {
+        "domain": "aiinvesttech.com",
+        "timestamp": "2025-11-28T15:17:40.182390",
+        "source": "yahoo_sender_hub",
+        "status": "Verified",
+        "verified": true,
+        "added_date": null,
+        "delivered_count": null,
+        "delivered_percentage": null,
+        "complaint_rate": null,
+        "complaint_percentage": null,
+        "complaint_trend": null,
+        "time_range": null,
+        "insights_data": {
+          "has_data": false
+        },
+        "screenshot_path": null,
+        "has_data": false
+      }
+    }
+  },
+  "last_updated": "2025-11-28T15:17:45.343267",
+  "latest_data": {
+    "domain": "aiinvesttech.com",
+    "timestamp": "2025-11-28T15:17:40.182390",
+    "source": "yahoo_sender_hub",
+    "status": "Verified",
+    "verified": true,
+    "added_date": null,
+    "delivered_count": null,
+    "delivered_percentage": null,
+    "complaint_rate": null,
+    "complaint_percentage": null,
+    "complaint_trend": null,
+    "time_range": null,
+    "insights_data": {
+      "has_data": false
+    },
+    "screenshot_path": null,
+    "has_data": false
+  },
+  "total_accounts": 2,
+  "aggregated_metrics": {
+    "average_delivered": 0,
+    "average_complaint_rate": 0,
+    "verified_accounts": 2,
+    "accounts_with_data": 0,
+    "total_accounts": 2
+  }
+}

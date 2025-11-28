@@ -1,0 +1,61 @@
+{
+  "domain": "leadlatticeloop.com",
+  "accounts": {
+    "rexson2001": {
+      "last_updated": "2025-11-28T15:18:43.799894",
+      "data": {
+        "domain": "leadlatticeloop.com",
+        "timestamp": "2025-11-28T15:18:38.129726",
+        "source": "yahoo_sender_hub",
+        "status": "Verified",
+        "verified": true,
+        "added_date": null,
+        "delivered_count": 302,
+        "delivered_percentage": null,
+        "complaint_rate": 0.0,
+        "complaint_percentage": null,
+        "complaint_trend": "neutral",
+        "time_range": null,
+        "insights_data": {
+          "has_data": true,
+          "delivered_count": 302,
+          "complaint_rate": 0.0,
+          "complaint_trend": "neutral"
+        },
+        "screenshot_path": "screenshots/leadlatticeloop.com_180_days.png",
+        "has_data": true
+      }
+    }
+  },
+  "last_updated": "2025-11-28T15:18:43.799903",
+  "latest_data": {
+    "domain": "leadlatticeloop.com",
+    "timestamp": "2025-11-28T15:18:38.129726",
+    "source": "yahoo_sender_hub",
+    "status": "Verified",
+    "verified": true,
+    "added_date": null,
+    "delivered_count": 302,
+    "delivered_percentage": null,
+    "complaint_rate": 0.0,
+    "complaint_percentage": null,
+    "complaint_trend": "neutral",
+    "time_range": null,
+    "insights_data": {
+      "has_data": true,
+      "delivered_count": 302,
+      "complaint_rate": 0.0,
+      "complaint_trend": "neutral"
+    },
+    "screenshot_path": "screenshots/leadlatticeloop.com_180_days.png",
+    "has_data": true
+  },
+  "total_accounts": 1,
+  "aggregated_metrics": {
+    "average_delivered": 302.0,
+    "average_complaint_rate": 0.0,
+    "verified_accounts": 1,
+    "accounts_with_data": 1,
+    "total_accounts": 1
+  }
+}
