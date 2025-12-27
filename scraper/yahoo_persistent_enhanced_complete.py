@@ -54,23 +54,78 @@ sys.stdout.reconfigure(line_buffering=True)
 class AccountManager:
     """Manage multiple Yahoo accounts"""
     
-    def __init__(self, accounts_file: str = "accounts.json"):
+    def __init__(self, accounts_file: str = None):
+        # Try multiple possible locations for accounts.json
         self.accounts_file = accounts_file
+        if not self.accounts_file:
+            self.accounts_file = self.find_accounts_file()
         self.accounts = self.load_accounts()
+    
+    def find_accounts_file(self):
+        """Try to find accounts.json in multiple possible locations"""
+        possible_locations = [
+            "accounts.json",  # Current directory
+            os.path.join(os.path.dirname(__file__), "accounts.json"),  # Same directory as script
+            os.path.join(os.getcwd(), "accounts.json"),  # Current working directory
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "accounts.json"),  # Parent directory
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "accounts.json"),  # Script directory
+        ]
+        
+        for location in possible_locations:
+            if os.path.exists(location):
+                print(f"✅ Found accounts.json at: {location}", flush=True)
+                return location
+        
+        print("⚠️ accounts.json not found in any common locations", flush=True)
+        return "accounts.json"  # Default
     
     def load_accounts(self) -> List[Dict]:
         """Load accounts from JSON file or environment variables"""
         accounts = []
+        
+        print(f"🔍 Looking for accounts file: {self.accounts_file}", flush=True)
         
         # Try to load from JSON file first
         if os.path.exists(self.accounts_file):
             try:
                 with open(self.accounts_file, 'r') as f:
                     data = json.load(f)
-                    accounts = data.get('yahoo_accounts', [])
+                    # Try different possible JSON structures
+                    if 'yahoo_accounts' in data:
+                        accounts = data.get('yahoo_accounts', [])
+                    elif isinstance(data, list):
+                        accounts = data
+                    elif 'accounts' in data:
+                        accounts = data.get('accounts', [])
+                    else:
+                        # Try to extract any list of accounts from the JSON
+                        for key, value in data.items():
+                            if isinstance(value, list) and len(value) > 0:
+                                if all(isinstance(item, dict) and 'email' in item for item in value):
+                                    accounts = value
+                                    break
+                
                 print(f"✅ Loaded {len(accounts)} accounts from {self.accounts_file}", flush=True)
+                
             except Exception as e:
                 print(f"❌ Error loading accounts from {self.accounts_file}: {e}", flush=True)
+                print(f"📋 File contents (first 500 chars):", flush=True)
+                try:
+                    with open(self.accounts_file, 'r') as f:
+                        content = f.read(500)
+                        print(content, flush=True)
+                except:
+                    print("Could not read file", flush=True)
+        else:
+            print(f"❌ Accounts file not found at: {self.accounts_file}", flush=True)
+            print(f"📁 Current working directory: {os.getcwd()}", flush=True)
+            print(f"📁 Script directory: {os.path.dirname(os.path.abspath(__file__))}", flush=True)
+            print("📋 Listing directory contents:", flush=True)
+            try:
+                for file in os.listdir('.'):
+                    print(f"  - {file}", flush=True)
+            except:
+                pass
         
         # If no accounts file or empty, try environment variables
         if not accounts:
@@ -86,10 +141,22 @@ class AccountManager:
                     'enabled': True
                 }]
                 print("✅ Loaded account from environment variables", flush=True)
+            else:
+                print("⚠️ No environment variables found for accounts", flush=True)
         
-        # Filter only enabled accounts
-        enabled_accounts = [acc for acc in accounts if acc.get('enabled', True)]
+        # Filter only enabled accounts (default to True if not specified)
+        enabled_accounts = []
+        for acc in accounts:
+            if acc.get('enabled', True):
+                enabled_accounts.append(acc)
+        
         print(f"📋 {len(enabled_accounts)} accounts enabled for scraping", flush=True)
+        
+        if enabled_accounts:
+            for acc in enabled_accounts:
+                print(f"  - {acc.get('email', 'No email')} ({acc.get('name', 'No name')})", flush=True)
+        else:
+            print("❌ No accounts available for scraping!", flush=True)
         
         return enabled_accounts
     
@@ -104,6 +171,25 @@ class AccountManager:
             print("💡 Please either:", flush=True)
             print("   1. Create accounts.json file with your Yahoo accounts", flush=True)
             print("   2. Set YAHOO_EMAIL and YAHOO_PASSWORD environment variables", flush=True)
+            print("📋 Example accounts.json format:", flush=True)
+            print('''
+{
+  "yahoo_accounts": [
+    {
+      "email": "your_email@yahoo.com",
+      "password": "your_password",
+      "name": "Account 1",
+      "enabled": true
+    },
+    {
+      "email": "another_email@yahoo.com",
+      "password": "another_password",
+      "name": "Account 2",
+      "enabled": true
+    }
+  ]
+}
+            ''', flush=True)
             return False
         return True
 
@@ -2354,7 +2440,7 @@ def main():
     
     # Create and run simultaneous persistent manager
     multi_manager = SimultaneousPersistentManager(
-        headless=True,  # Set to True for Docker (no GUI)
+        headless=False,  # Set to True for Docker (no GUI)
         db_manager=db_manager
     )
     
