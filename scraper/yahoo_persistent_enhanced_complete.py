@@ -830,40 +830,40 @@ class PersistentAccountScraper:
         try:
             chrome_options = Options()
             
+            chrome_options = Options()
+
             if self.headless:
                 chrome_options.add_argument("--headless=new")
-            
-            # DOCKER-COMPATIBLE Chrome settings - ENHANCED FOR STABILITY
+
+            # Docker-safe (KEEP)
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--disable-gpu")
-            chrome_options.add_argument("--remote-debugging-port=0")  # Use random port
+            chrome_options.add_argument("--remote-debugging-port=0")
             chrome_options.add_argument("--disable-software-rasterizer")
-            chrome_options.add_argument("--disable-background-timer-throttling")
-            chrome_options.add_argument("--disable-backgrounding-occluded-windows")
-            chrome_options.add_argument("--disable-renderer-backgrounding")
-            chrome_options.add_argument("--disable-features=VizDisplayCompositor")
-            chrome_options.add_argument("--disable-back-forward-cache")
-            
-            # PERSISTENT settings with incognito mode
+
+            # Browser realism (CRITICAL)
+            chrome_options.add_argument("--window-size=1920,1080")
             chrome_options.add_argument("--incognito")
+
             chrome_options.add_argument("--disable-blink-features=AutomationControlled")
             chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-            chrome_options.add_experimental_option('useAutomationExtension', False)
-            chrome_options.add_argument("--window-size=1920,1080")
-            chrome_options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-            chrome_options.add_argument("--force-device-scale-factor=1")
-            chrome_options.add_argument("--log-level=3")
-            chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-            
-            # Additional Docker compatibility - MEMORY OPTIMIZATION
+            chrome_options.add_experimental_option("useAutomationExtension", False)
+            chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
+
+            # IMPORTANT: WINDOWS UA EVEN ON LINUX
+            chrome_options.add_argument(
+                "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/120.0.0.0 Safari/537.36"
+            )
+
+            # Optional (safe)
             chrome_options.add_argument("--disable-extensions")
             chrome_options.add_argument("--disable-plugins")
-            chrome_options.add_argument("--disable-images")  # Disable images to save memory
-            chrome_options.add_argument("--blink-settings=imagesEnabled=false")
-            chrome_options.add_argument("--disable-javascript")  # Disable JS if not needed
-            chrome_options.add_argument("--memory-pressure-off")
-            chrome_options.add_argument("--max_old_space_size=4096")
+            chrome_options.add_argument("--log-level=3")
+
+
             
             # Try multiple times to setup driver with better error handling
             max_attempts = 5  # Increased attempts
@@ -2440,7 +2440,7 @@ def main():
     
     # Create and run simultaneous persistent manager
     multi_manager = SimultaneousPersistentManager(
-        headless=False,  # Set to True for Docker (no GUI)
+        headless=True,  # Set to True for Docker (no GUI)
         db_manager=db_manager
     )
     

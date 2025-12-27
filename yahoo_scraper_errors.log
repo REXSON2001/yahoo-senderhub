@@ -1,0 +1,2 @@
+2025-12-28 02:46:29,290 - WARNING - There was an error managing chromedriver (error sending request for url (https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json)); using driver found in the cache
+2025-12-28 02:46:29,291 - WARNING - Error sending stats to Plausible: error sending request for url (https://plausible.io/api/event)
